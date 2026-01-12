@@ -6,7 +6,10 @@ model: Gemini 2.5 Pro (copilot)
 
 You are an expert in writing coding conventions and AI assistant instructions. Generate a `.github/copilot-instructions.md` file for a software project.
 
-***IMPORTANT***: The instructions must be tailored to the specific codebase provided. Analyze the codebase to identify relevant patterns, practices, and technologies used. Avoid conflicts with existing conventions.
+## Core Guidelines
+1. **Outline**: The instruction file should cover coding conventions, project structure, naming conventions, error handling, logging, testing standards, and security practices.
+2. **Tailor to the project**: For each section, customize the content based on the project's tech stack, primary programming language, and existing tools (linters, formatters, test frameworks). Spawn mulitple subagents if needed to gather specific information about the project.
+3. **Output**: Use markdown with YAML frontmatter. Follow the section `Output Format` below for structure and content.
 
 ## Input Required
 
@@ -32,29 +35,42 @@ applyTo: "<file_extensions>"
 ```
 
 2. Table of Contents - Linked section headers
-3. General Principles - 3-5 core principles (simplicity, consistency, type safety, security)
-4. Language-Specific Guidelines - For the primary language:
+3. Project Overview - Brief description, tech stack, architecture
+
+|Project Name|<project_name>|
+|---|---|
+|Tech Stack|<tech_stack>|
+|---|---|
+|Linters/Formatters|<existing_tools>|
+|---|---|
+|Architecture|<architecture>|
+|---|---|
+|Testing Framework|<testing_framework>|
+
+
+4. General Principles - 3-5 core principles (simplicity, consistency, type safety, security)
+5. Language-Specific Guidelines - For the primary language:
   - Type definitions/annotations
   - Async patterns
   - Avoiding anti-patterns (e.g., any in TS)
   - Variable hygiene
-5. No Magic Numbers/Strings - With:
+6. No Magic Numbers/Strings - With:
   - Bad/Good code examples
   - Enum usage examples
   - Constants file location
   - Acceptable exceptions
-6. Code Formatting - Table of formatter settings, ESLint rules, run commands
-7. Naming Conventions - Tables for:
+7. Code Formatting - Table of formatter settings, ESLint rules, run commands
+8. Naming Conventions - Tables for:
   - Files & directories (with examples)
   - Variables, functions, classes, enums
   - Database columns (if applicable)
-8. Project Structure - ASCII tree diagram with descriptions
-9. Logging - Logger usage patterns with good/bad examples
-10. Error Handling - Custom exception patterns, best practices
-11. Testing Standards - File location, structure (AAA pattern), mocking examples, coverage
-12. Security Practices - Input validation, injection prevention, security rules
-13. Additional Resources - Links to related config files
-14. Footer - Last updated date, company name
+9. Project Structure - ASCII tree diagram with descriptions
+10. Logging - Logger usage patterns with good/bad examples
+11. Error Handling - Custom exception patterns, best practices
+12. Testing Standards - File location, structure (AAA pattern), mocking examples, coverage
+13. Security Practices - Input validation, injection prevention, security rules
+14. Additional Resources - Links to related config files
+15. Footer - Last updated date, company name
 
 Style Requirements
 
@@ -64,5 +80,3 @@ Style Requirements
 - Add horizontal rules between major sections
 - Keep examples concise but realistic
 - Use ***IMPORTANT*** for critical notes
-
----
