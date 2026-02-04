@@ -18,6 +18,7 @@ INCLUDE_ITEMS=(
   "instructions"
   "prompts"
   "agents"
+  "skills"
 )
 
 for item in "${INCLUDE_ITEMS[@]}"; do

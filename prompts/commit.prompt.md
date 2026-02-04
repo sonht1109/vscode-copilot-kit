@@ -1,7 +1,8 @@
 ---
 description: 'Commit any uncommitted changes in the working directory.'
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'todo']
+tools: ['execute', 'read', 'search', 'agent', 'todo']
 argument-hint: '[jira_ticket?]'
+model: Claude Haiku 4.5 (copilot)
 ---
 
 ## Arguments

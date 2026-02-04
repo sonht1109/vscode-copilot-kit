@@ -23,12 +23,7 @@ Ignore tasks that need manual actions. Mark tasks that can be executed in parall
 ***IMPORTANT*** At each step, you have max 3 attemps to any errors you encounter. If errors still occur, skip that task and all tasks that depends on and report them to the user.
 4. **Testing**: After implementation, rigorously test the new features to ensure they work as intended and do not introduce new issues.
 5. **Update Checklist**: Mark tasks as completed in your TODO list as you finish them.
-6. **Code Review**: Use #tool:agent/runSubagent to delegate to `code-reviewer` agent to review your code for quality.
-Provide the following instructions to the agent:
-- code_change: all code changes made during implementation.
-- requirement: retrieve from plan file.
-If there are any critical issues found during the review, print out them first so that user can review before fixing them.
-7. **Next Steps**: After completing the implementation and code review, inform the user of the next steps, such as further manual testing, or improvements.
+6. **Next Steps**: After completing the implementation and code review, inform the user of the next steps, such as further manual testing, or improvements.
 
 ***IMPORTANT*** DO NOT try to fix any unexpected issues that are not part of the plan. Report them to the user for further instructions.
 ***IMPORTANT*** If you encounter any ambiguities or uncertainties in the plan, report them to the user for clarification before proceeding.

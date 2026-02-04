@@ -58,21 +58,15 @@ This kit will use MCP server to interact with external data resource. Suggest in
    },
    "type": "stdio"
   },
-  "github-mcp": {
-   "command": "docker",
-   "args": [
-    "run",
-    "-i",
-    "--rm",
-    "-e",
-    "GITHUB_PERSONAL_ACCESS_TOKEN",
-    "ghcr.io/github/github-mcp-server"
-   ],
-   "env": {
-    "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GH_TOKEN}" // this one is configured below. Avoid hardcoding here
-   },
-   "type": "stdio"
-  }
+  "sequentialthinking-mcp": {
+    "command": "docker",
+    "args": [
+      "run",
+      "--rm",
+      "-i",
+      "mcp/sequentialthinking"
+    ]
+  },
  }
 }
 ```
@@ -138,3 +132,7 @@ Step-by-step guides for common development tasks:
   - [code-reviewer]()
   - [planner]()
   - [jira-ticket-analyzer]()
+- Skills:
+  - [backend-development]()
+  - [gh]()
+  - [sequential-thinking]()
