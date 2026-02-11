@@ -73,7 +73,7 @@ Then run command:
 git add . && git commit -m "<commit_message>"
 ```
 
-Where commit_message **MUST** follow `.github/instructions/git-commit-lint.instructions.md`
+Where commit_message **MUST** follow `.github/instructions/git.instructions.md`
 
 ### 4. Rebase the branch onto the target branch
 
