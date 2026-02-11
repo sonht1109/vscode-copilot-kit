@@ -46,3 +46,7 @@ Eg:
 - `feat/IMP-1234`
 - `fix/IOS-5678`
 - `docs/adhoc/update-readme`
+
+## Notes
+
+- NEVER work directly on protected branches like main, develop, staging.
