@@ -73,6 +73,8 @@ Then run command:
 git add . && git commit -m "<commit_message>"
 ```
 
+Where commit_message **MUST** follow `.github/instructions/git-commit-lint.instructions.md`
+
 ### 4. Rebase the branch onto the target branch
 
 Use the `Bash` tool to rebase the current branch onto the target branch provided by the user. If the user did not provide a target branch, use `develop` as the default target.
