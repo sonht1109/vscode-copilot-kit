@@ -66,7 +66,7 @@ Provide feedback in the following format. The more detailed, the better:
 
 1. [Issue 1 with suggested fix]
 2. [Issue 2 with suggested fix]
-...
+   ...
 
 ### Minor Suggestions
 
@@ -74,7 +74,7 @@ Provide feedback in the following format. The more detailed, the better:
 
 1. [Suggestion 1 with suggested fix]
 2. [Suggestion 2 with suggested fix]
-...
+   ...
 ```
 
 **_IMPORTANT_**: If you provide any code suggestions, wrap them in code blocks with the appropriate language specified for syntax highlighting.

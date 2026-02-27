@@ -1,0 +1,9 @@
+.github/agents/figma-analyzer.agent.md
+.claude
+.github/prompts/generate-service-doc.prompt.md
+.github/skills/atlassian/*
+.github/skills/figma-implementation/*
+.github/prompts/create-deployment-checklist.prompt.md
+.github/prompts/approve-pr.prompt.md
+.agentignore
+.github/.agentignore

@@ -1,0 +1,11 @@
+node_modules
+dist
+build
+.git
+__pycache__
+.env
+.env.dev
+.env.staging
+.env.test
+.zshrc
+.npmrc

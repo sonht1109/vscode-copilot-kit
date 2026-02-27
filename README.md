@@ -4,7 +4,7 @@ A collection of MD files that helps interact with VSCode Copilot agent.
 
 ## Installation
 
-### MCP Server setup
+### MCP Server
 
 This kit will use MCP server to interact with external data resource. Suggest installing JIRA + Github MCP server in VSCode.
 
@@ -13,61 +13,56 @@ This kit will use MCP server to interact with external data resource. Suggest in
 
 ```json
 {
- "inputs": [
-  {
-   "type": "promptString",
-   "id": "github_token",
-   "description": "GitHub Personal Access Token",
-   "password": true
-  },
-  {
-   "type": "promptString",
-   "id": "atlassian_token",
-   "description": "Atlassian API Token",
-   "password": true
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "github_token",
+      "description": "GitHub Personal Access Token",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "atlassian_token",
+      "description": "Atlassian API Token",
+      "password": true
+    }
+  ],
+  "servers": {
+    "atlassian-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_USERNAME",
+        "-e",
+        "CONFLUENCE_API_TOKEN",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_USERNAME",
+        "-e",
+        "JIRA_API_TOKEN",
+        "ghcr.io/sooperset/mcp-atlassian:latest"
+      ],
+      "env": {
+        "CONFLUENCE_URL": "https://<org>.atlassian.net/wiki",
+        "CONFLUENCE_USERNAME": "<username>@<org>.com", // replace your email
+        "CONFLUENCE_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}", // this one is configured below. Avoid hardcoding here
+        "JIRA_URL": "https://<org>.atlassian.net",
+        "JIRA_USERNAME": "<username>@<o.com", // replace your email
+        "JIRA_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}" // this one is configured below. Avoid hardcoding here
+      },
+      "type": "stdio"
+    },
+    "sequentialthinking-mcp": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "mcp/sequentialthinking"]
+    }
   }
- ],
- "servers": {
-  "atlassian-mcp": {
-   "command": "docker",
-   "args": [
-    "run",
-    "-i",
-    "--rm",
-    "-e",
-    "CONFLUENCE_URL",
-    "-e",
-    "CONFLUENCE_USERNAME",
-    "-e",
-    "CONFLUENCE_API_TOKEN",
-    "-e",
-    "JIRA_URL",
-    "-e",
-    "JIRA_USERNAME",
-    "-e",
-    "JIRA_API_TOKEN",
-    "ghcr.io/sooperset/mcp-atlassian:latest"
-   ],
-   "env": {
-    "CONFLUENCE_URL": "https://<org>.atlassian.net/wiki",
-    "CONFLUENCE_USERNAME": "<username>@<org>.com", // replace your email
-    "CONFLUENCE_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}", // this one is configured below. Avoid hardcoding here
-    "JIRA_URL": "https://<org>.atlassian.net",
-    "JIRA_USERNAME": "<username>@<org>.com", // replace your email
-    "JIRA_API_TOKEN": "${env:ATLASSIAN_API_TOKEN}" // this one is configured below. Avoid hardcoding here
-   },
-   "type": "stdio"
-  },
-  "sequentialthinking-mcp": {
-    "command": "docker",
-    "args": [
-      "run",
-      "--rm",
-      "-i",
-      "mcp/sequentialthinking"
-    ]
-  },
- }
 }
 ```
 
@@ -84,13 +79,12 @@ source ~/.zshrc
 
 ### Repo Setup
 
+#### 1. First time setup
+
 Clone the repo:
 
 ```bash
 cd ~ && git clone git@github.com:sonht1109/vscode-copilot-kit.git
-
-### OR if you did cloned before, just pull the latest changes
-cd ~/vscode-copilot-kit && git pull origin main
 ```
 
 Add permission to execute bash file:
@@ -99,16 +93,36 @@ Add permission to execute bash file:
 chmod +x ~/vscode-copilot-kit/setup.sh
 ```
 
-Then `cd` into your service which you want to use this kit to link MD files.
+Then `cd` into your project which you want to use this kit to link MD files.
 
 For example:
 
 ```bash
-cd <your-project> && ~/vscode-copilot-kit/setup.sh
+cd <project> && ~/vscode-copilot-kit/setup.sh
 ```
 
+#### 2. Update the kit
+
+If you want to update the kit to get the latest changes, just run the setup script again (**in the project folder**):
+
+```bash
+cd <project> && ~/vscode-copilot-kit/setup.sh
+```
+
+This is the result:
+
+![](./assets/image-1.png)
 
 That's it. You can start using the kit. Check the usage below to know how to use this kit.
+
+> 💡 **Tip:**
+> If you don't see the instruction file `copilot-instructions.md`, you SHOULD generate one by running:
+>
+> ```bash
+> /generate-instruction
+> ```
+>
+> This is optional, but helps Copilot work even better!
 
 ## Workflows
 
@@ -130,9 +144,10 @@ Step-by-step guides for common development tasks:
   - [generate-instruction]()
 - Agents:
   - [code-reviewer]()
-  - [planner]()
+  - [planner]
   - [jira-ticket-analyzer]()
 - Skills:
   - [backend-development]()
   - [gh]()
   - [sequential-thinking]()
+  - [docs-seeker]()

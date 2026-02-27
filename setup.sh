@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Creating symlinks for Github configuration files..."
-
 set -euo pipefail
 
 # Absolute path of this script
@@ -15,11 +13,37 @@ DEST="$TARGET_DIR/.github"
 mkdir -p "$DEST"
 
 INCLUDE_ITEMS=(
+  ".github/instructions"
+  ".github/prompts"
+  ".github/skills"
+  ".github/hooks"
+  ".github/scripts"
+  ".github/agents"
+)
+
+TO_REMOVE_ITEMS=(
   "instructions"
   "prompts"
-  "agents"
   "skills"
+  "hooks"
+  "scripts"
+  "agents"
+  ".copilotignore"
 )
+
+echo "Pulling latest changes from the repository..."
+
+cd "$SCRIPT_DIR" && git pull origin main && cd "$TARGET_DIR"
+
+echo "Creating symlinks for Github configuration files..."
+
+for item in "${TO_REMOVE_ITEMS[@]}"; do
+  TARGET_PATH="$DEST/$(basename "$item")"
+  if [[ -e "$TARGET_PATH" || -L "$TARGET_PATH" ]]; then
+    rm -rf "$TARGET_PATH"
+    echo "🗑️  Removed existing item: $TARGET_PATH"
+  fi
+done
 
 for item in "${INCLUDE_ITEMS[@]}"; do
   SRC_PATH="$SCRIPT_DIR/$item"
@@ -38,3 +62,9 @@ for item in "${INCLUDE_ITEMS[@]}"; do
   ln -s "$SRC_PATH" "$DEST_PATH"
   echo "🔗 Linked: $item"
 done
+
+chmod +x .github/scripts/hooks/*.sh
+
+echo "Creating .agentignore if it doesn't exist..."
+
+cp -n "$SCRIPT_DIR/.agentignore.example" "$TARGET_DIR/.github/.agentignore" 2>/dev/null || true

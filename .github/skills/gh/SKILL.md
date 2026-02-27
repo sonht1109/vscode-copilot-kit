@@ -104,6 +104,9 @@ GH_PAGER=cat gh pr view <pr_number> --repo <owner>/<repo> --json title,body
 
 # Get code changes
 GH_PAGER=cat gh pr diff <pr_number> --repo <owner>/<repo>
+
+# Use sed to limit output size if necessary
+GH_PAGER=cat gh pr diff <pr_number> --repo <owner>/<repo> | sed -n '500,1000p' # Get lines 500 to 1000
 ```
 
 ## Notes

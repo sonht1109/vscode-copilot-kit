@@ -1,7 +1,6 @@
 ---
 description: 'Generate instruction file based on current code base'
 tools: ['execute', 'read', 'edit', 'search', 'agent', 'todo']
-model: Claude Sonnet 4.5 (copilot)
 ---
 
 You are an expert in writing coding conventions and AI assistant instructions. Generate a `.github/copilot-instructions.md` file for a software project.
@@ -86,13 +85,15 @@ For example:
 
 9. Logging - Current project usage patterns with good/bad examples
 10. Error Handling - Make example of current error handling pattern of project
+
 ```markdown
 try {
-  // code
+// code
 } catch (error) {
-  // handle error
+// handle error
 }
 ```
+
 11. Testing Standards - File location, structure (AAA pattern), mocking examples, run commands (suggest running only relevant tests)
 12. Security Practices - Input validation, injection prevention, security rules
 13. External Integrations - Microservices interaction

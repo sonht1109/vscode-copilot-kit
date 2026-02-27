@@ -63,21 +63,17 @@ If requirement is provided, use it to understand the context of the changes. Oth
 
 ### 3. Commit any uncommitted changes
 
-If there are any uncommitted changes in the working directory, use the `Bash` tool to commit those changes before creating the PR. Delegate `git-master` agent to help create commit message. Pass the following arguments to the agent:
-
-- **change_summary**: The summary of code changes extracted in step 1.
-
-Then run command:
+If there are any uncommitted changes in the working directory, use the #tool:execute to commit those changes before creating the PR. Run command:
 
 ```bash
 git add . && git commit -m "<commit_message>"
 ```
 
-Where commit_message **MUST** follow `.github/instructions/git.instructions.md`
+Where commit_message MUST follow `.github/instructions/git.instructions.md` rules.
 
 ### 4. Rebase the branch onto the target branch
 
-Use the `Bash` tool to rebase the current branch onto the target branch provided by the user. If the user did not provide a target branch, use `develop` as the default target.
+Use the #tool:execute to rebase the current branch onto the target branch provided by the user. If the user did not provide a target branch, use `develop` as the default target.
 
 ```bash
 git fetch origin && git rebase origin/<target_branch>
@@ -85,7 +81,7 @@ git fetch origin && git rebase origin/<target_branch>
 
 ### 5. Push the rebased branch to remote
 
-Use the `Bash` tool to push the rebased branch to the remote repository.
+Use the #tool:execute to push the rebased branch to the remote repository.
 
 ```bash
 git push origin HEAD
@@ -147,14 +143,21 @@ Tick tick_4 if code comments were found.
 Tick tick_5 if tests were added.
 Tick tick_6 if tests were added.
 
-Then use #tool:edit to write PR body into `/tmp/pr_body.md` file. Create file if not exists, or overwrite whole file if exists.
+Then write PR body into `/tmp/pr_body.md` file. Run command:
+
+```bash
+cat > /tmp/pr_body.md << EOF
+<PR_body>
+EOF
+echo "Success"
+```
 
 ### 7. Create the Pull Request
 
 Run command to create PR:
 
 ```bash
-gh pr create --title "<title>" --body-file /tmp/pr_body.md --base <base> --head $(git rev-parse --abbrev-ref HEAD)
+gh pr create --title "<title>" --body-file /tmp/pr_body.md --base <base> --head $(git rev-parse --abbrev-ref HEAD) && echo "Success" || echo "Failed"
 ```
 
 Where:
