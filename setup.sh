@@ -2,11 +2,46 @@
 
 set -euo pipefail
 
+echo -e "\n🚀🚀🚀 Setting up Copilot ...\n"
+
 # Absolute path of this script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # TARGET_DIR = where you executed the script from
 TARGET_DIR="$(pwd)"
+
+# Parse command-line arguments
+USE_LINK=false
+USE_ALL=false
+
+for arg in "$@"; do
+  case "$arg" in
+    -ln|--link)
+      USE_LINK=true
+      ;;
+    -cp|--copy)
+      USE_LINK=false
+      ;;
+    -a|--all)
+      USE_ALL=true
+      ;;
+    -h|--help)
+      echo "Usage: ./setup.sh [options]"
+      echo ""
+      echo "Options:"
+      echo "  -cp, --copy    Copy files instead of linking (default)"
+      echo "  -ln, --link    Create symbolic links instead of copying"
+      echo "  -a,  --all     Also run setup-claude.sh and setup-opencode.sh"
+      echo "  -h, --help     Show this help message"
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $arg"
+      echo "Use -h or --help for usage information"
+      exit 1
+      ;;
+  esac
+done
 
 # Destination folder
 DEST="$TARGET_DIR/.github"
@@ -19,6 +54,7 @@ INCLUDE_ITEMS=(
   ".github/hooks"
   ".github/scripts"
   ".github/agents"
+  ".github/templates"
 )
 
 TO_REMOVE_ITEMS=(
@@ -28,14 +64,20 @@ TO_REMOVE_ITEMS=(
   "hooks"
   "scripts"
   "agents"
-  ".copilotignore"
+  ".agentignore"
+  "sh-config.json"
+  "templates"
 )
 
-echo "Pulling latest changes from the repository..."
-
-cd "$SCRIPT_DIR" && git pull origin main && cd "$TARGET_DIR"
-
-echo "Creating symlinks for Github configuration files..."
+if [[ "$USE_LINK" == true ]]; then
+  echo "Creating symlinks for Github configuration files..."
+  MODE_MSG="Linked"
+  MODE_EMOJI="🔗"
+else
+  echo "Copying Github configuration files..."
+  MODE_MSG="Copied"
+  MODE_EMOJI="📋"
+fi
 
 for item in "${TO_REMOVE_ITEMS[@]}"; do
   TARGET_PATH="$DEST/$(basename "$item")"
@@ -59,12 +101,27 @@ for item in "${INCLUDE_ITEMS[@]}"; do
     continue
   fi
 
-  ln -s "$SRC_PATH" "$DEST_PATH"
-  echo "🔗 Linked: $item"
+  if [[ "$USE_LINK" == true ]]; then
+    ln -s "$SRC_PATH" "$DEST_PATH"
+  else
+    cp -r "$SRC_PATH" "$DEST_PATH"
+  fi
+  echo "$MODE_EMOJI $MODE_MSG: $item"
 done
 
 chmod +x .github/scripts/hooks/*.sh
 
-echo "Creating .agentignore if it doesn't exist..."
+bash "$SCRIPT_DIR/setup-config.sh"
 
-cp -n "$SCRIPT_DIR/.agentignore.example" "$TARGET_DIR/.github/.agentignore" 2>/dev/null || true
+echo -e "\n✅ Done Copilot\n"
+
+# If --all is passed, also run setup-claude.sh and setup-opencode.sh
+if [[ "$USE_ALL" == true ]]; then
+  LINK_FLAG=""
+  if [[ "$USE_LINK" == true ]]; then
+    LINK_FLAG="--link"
+  fi
+  echo ""
+  echo "Running additional setup scripts..."
+  bash "$SCRIPT_DIR/setup-claude.sh" $LINK_FLAG && bash "$SCRIPT_DIR/setup-opencode.sh" $LINK_FLAG
+fi
