@@ -1,5 +1,5 @@
 ---
-model: Claude Opus 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 description: Plan a new feature in a software project. Create a comprehensive specification document with requirements, design, and tasks.
 tools:
   [

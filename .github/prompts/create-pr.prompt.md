@@ -2,7 +2,6 @@
 description: 'Create a pull request for the changes made in the codebase. User has to provide a target branch for the PR. Also user may provide related JIRA ticket. JIRA ticket may start with IMP- or IOS-. If user provides JIRA ticket, include it in the PR title and description.'
 tools: ['execute', 'read', 'edit', 'search', 'web', 'atlassian-mcp/jira_get_issue', 'agent', 'todo']
 argument-hint: '[target_branch] [jira_ticket?]'
-model: Claude Haiku 4.5 (copilot)
 ---
 
 ## Arguments
@@ -92,7 +91,7 @@ git push origin HEAD
 Prepare a PR title and description using the following guidelines:
 
 - PR title format: the commit message format used in step 3.
-- PR description MUST follow the template in `.github/pull_request_template.md`. Fill in the relevant sections based on the code changes and JIRA ticket details (if provided). For example:
+- PR description MUST follow the template below. Fill in the relevant sections based on the code changes and JIRA ticket details (if provided). For example:
 
 ```md
 # Description
@@ -152,6 +151,8 @@ EOF
 echo "Success"
 ```
 
+If its failed to write file, write into <cwd>/notes/pr_body.md instead, but remember to delete the file after finishing PR creation.
+
 ### 7. Create the Pull Request
 
 Run command to create PR:
@@ -163,7 +164,7 @@ gh pr create --title "<title>" --body-file /tmp/pr_body.md --base <base> --head 
 Where:
 
 - **title**: The PR title you created at step 6
-- **base**: The target branch provided by the user or `develop` if not provided
+- **base**: The $target_branch provided by the user or `develop` if not provided
 
 ### 8. Provide PR link to the user
 

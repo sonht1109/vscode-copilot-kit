@@ -30,7 +30,14 @@ Plan, build, and deliver new features with clarity and speed.
 ```
 *Agent follows the plan, writes code, and runs checks.*
 
-### 4. Deliver
+### 4. Review Code Changes
+```bash
+# Review code changes made during implementation
+/review-code-changes
+```
+*Agent checks code quality, style, and adherence to requirements.*
+
+### 5. Deliver
 ```bash
 # Create a pull request
 /create-pr develop IMP-1234
@@ -40,6 +47,7 @@ Plan, build, and deliver new features with clarity and speed.
 ## Commands
 - `/plan <JIRA_ticket>` – Generate feature plan
 - `/cook <plan_file>` – Implement from plan
+- `/review-code-changes` – Review code changes from plan
 - `/create-pr <branch> <JIRA_ticket>` – Create PR
 
 ---

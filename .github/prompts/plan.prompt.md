@@ -2,7 +2,7 @@
 description: 'Create a detailed project plan based on the provided requirements and objectives.'
 tools: ['execute', 'read', 'edit', 'search', 'atlassian-mcp/*', 'agent', 'todo']
 argument-hint: '[requirements or JIRA ticket]'
-model: Claude Opus 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 ---
 
 ## Arguments

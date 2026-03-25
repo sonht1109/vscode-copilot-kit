@@ -2,7 +2,6 @@
 description: 'Commit any uncommitted changes in the working directory.'
 tools: ['execute', 'read', 'search', 'agent', 'todo']
 argument-hint: '[jira_ticket?]'
-model: Claude Haiku 4.5 (copilot)
 ---
 
 ## Arguments
@@ -18,4 +17,3 @@ model: Claude Haiku 4.5 (copilot)
 ```bash
 git add . && git commit -m "<commit_message>"
 ```
-Where commit_message **MUST** follow `.github/instructions/git-commit-lint.instructions.md`

@@ -1,5 +1,5 @@
 ---
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 description: Gather JIRA ticket requirements and technical design description so that they can be used for implementation or code review.
 tools: ['atlassian-mcp/jira_get_issue', 'atlassian-mcp/confluence_get_page', 'atlassian-mcp/confluence_get_page_children', 'agent', 'todo']
 argument-hint: '[JIRA_ticket]'
@@ -25,6 +25,7 @@ Focus on the following aspects:
 2. **Fetch Documentation (if any):**
 - Check the ticket for any linked documentation or design documents. Only focus on ***Confluence*** pages. Ignore other types of links.
 - Use #tool:atlassian-mcp/confluence_get_page to retrieve these documents for additional context.
+- If description contains Sentry issue link, analyze the issue use `sentry` skills.
 
 **_IMPORTANT:_** Only focus on technical design of the provided JIRA ticket. Do not include any unrelated information. For example, if the ticket is sub-task of a larger feature, do not include the overall feature design unless it is directly relevant to the sub-task.
 

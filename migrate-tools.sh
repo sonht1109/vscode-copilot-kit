@@ -1,0 +1,1 @@
+sh migrate-to-claude.sh && sh migrate-to-opencode.sh

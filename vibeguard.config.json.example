@@ -1,0 +1,33 @@
+{
+  "enabled": true,
+  "debug": true,
+  "max_mappings": 100000,
+  "placeholder_prefix": "__VG_",
+  "patterns": {
+    "keywords": [
+      {
+        "value": "my-api-key-123",
+        "category": "API_KEY"
+      },
+      {
+        "value": "secret keyword",
+        "category": "SECRET"
+      }
+    ],
+    "builtin": [
+      "email",
+      "uuid",
+      "ipv4",
+      "mac",
+      "openai_key",
+      "github_token",
+      "aws_access_key"
+    ],
+    "exclude": [
+      "example.com",
+      "localhost",
+      "127.0.0.1",
+      "0.0.0.0"
+    ]
+  }
+}
