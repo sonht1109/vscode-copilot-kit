@@ -9,9 +9,11 @@ Use this skill when the user requests to clone a GitHub Pull Request (PR) locall
 
 ## Notes
 
-- cwd: The current working directory of the local repository where the user is running the commands (not `.github` directory).
+- cwd: The current working directory of the local repository where the user is running the commands (not `.github` directory). Must use this cwd for all file paths in the steps below.
 
 ## Steps
+
+Must follow these steps strictly in order:
 
 1. **Extract PR Information**: Identify the repository owner, repository name, and PR number from the user's request.
 
@@ -19,7 +21,15 @@ Use this skill when the user requests to clone a GitHub Pull Request (PR) locall
 - `<REPO>` is the GitHub repository name.
 - `<PR_NUMBER>` is the number of the Pull Request.
 
-2. **Get PR description**: Use the GitHub CLI to fetch the PR details to ensure it exists and gather necessary information and save into `notes/prs/<PR_NUMBER>/details.json`. Run command:
+2. **Get PR description**: Use the GitHub CLI to fetch the PR details to ensure it exists and gather necessary information and save into `notes/prs/<PR_NUMBER>/details.json`.
+
+First, create the directory for the PR if it doesn't exist:
+
+```bash
+mkdir -p <cwd>/notes/prs/<PR_NUMBER>
+```
+
+Then run command:
 
 ```bash
 gh pr view <PR_NUMBER> --repo <OWNER>/<REPO> --json title,body > <cwd>/notes/prs/<PR_NUMBER>/details.json

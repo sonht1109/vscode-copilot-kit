@@ -17,9 +17,11 @@ node -e "console.log(new Date().toISOString().replace('T', '_').replace(/[:.-]/g
 
 ## Notes
 
-- cwd: The current working directory of the local repository where the user is running the commands (not `.github` directory).
+- cwd: The current working directory of the local repository where the user is running the commands (not `.github` directory). Must use this cwd for all file paths in the steps below.
 
 ## Steps
+
+Must follow these steps strictly in order:
 
 1. **Stage all code changes**: Stage all changes in the local git repository to prepare for cloning. Run command:
 
@@ -32,19 +34,26 @@ git diff --cached --shortstat | awk '{ins=$4; del=$6; print "LINES:"(ins+del)}' 
 git diff --cached --name-only | awk 'END {print "FILES:"NR}'
 ```
 
-2. **Clone the changes**: Run command to create a patch file with the staged changes into `<cwd>/notes/code-changes/<now>/diff.patch`:
+2. **Clone the changes**: Run command to create a patch file with the staged changes into `<cwd>/notes/code-changes/<now>/diff.patch`.
+
+First, create the directory for the code changes if it doesn't exist:
+```bash
+mkdir -p <cwd>/notes/code-changes/<now>
+```
+
+Then run command:
 
 ```bash
 git diff --cached > <cwd>/notes/code-changes/<now>/diff.patch
 ```
 
-3. **Separate patch file**: separate patch files for the PR diff into multiple files to keep changes organized. Run script:
+3. **Separate patch file**: separate patch files for the code changes into multiple files to keep changes organized. Run script:
 
 ```bash
 node <cwd>/.github/skills/clone-code-changes/scripts/separate-patch.js <now>
 ```
 
-5. **Provide confirmation**: Inform the user that the PR has been successfully cloned and provide the local path to the cloned PR. Provide output following the specified format.
+5. **Provide confirmation**: Inform the user that the code changes have been successfully cloned and provide the local path to the cloned code changes. Provide output following the specified format.
 
 ## Output Format
 
@@ -53,7 +62,7 @@ Provide output in the following format:
 ```markdown
 The code changes have been successfully cloned.
 
-- PR diff patch directory: `<cwd>/notes/code-changes/<now>/contents`
+- Code change patch directory: `<cwd>/notes/code-changes/<now>/contents`
 ```
 
 ## Notes

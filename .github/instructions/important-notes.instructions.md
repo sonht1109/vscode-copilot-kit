@@ -11,3 +11,5 @@
 **_IMPORTANT:_** Never run lint for whole project unless user asks. Only run lint for files that have been recently edited.
 
 **_IMPORTANT:_** Never commit code to git without user approval, or without clear instructions from user to do so.
+
+**_IMPORTANT:_** Always try to leverage subagents to handle independent tasks parallelly.
