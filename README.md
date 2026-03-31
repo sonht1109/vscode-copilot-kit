@@ -57,7 +57,7 @@ That's it. You can start using the kit. Check the usage below to know how to use
 > 💡 If you don't see the instruction file `copilot-instructions.md`, you SHOULD generate one by running:
 >
 > ```bash
-> /generate-instruction
+> /init
 > ```
 >
 > This is optional, but helps Copilot work even better!
