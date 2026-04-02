@@ -1,5 +1,5 @@
 ---
-name: wip-cook-figma
+name: cook-figma
 description: Transform Figma design files into code implementations for web or mobile applications.
 argument-hint: '[figma_file_url]'
 ---
