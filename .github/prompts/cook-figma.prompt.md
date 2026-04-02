@@ -15,7 +15,6 @@ Your mission is to take Figma design files and convert them into functional code
 ## Core Principles
 
 - **Skill**: Use skill in `.gitihub/skills/figma-implementation` to implement figma designs to code.
-- **Design docs**: ALWAYS refer to docs in `<cwd>/docs/design` to understand list of components used in repositories and theme so that you can implement designs consistently.
 - **Component Use**: From Figma MCP output, try to reuse existing components as much as possible also theme as well. Understand component hierarchy and component style so that you can decide which components to reuse.
 
 Eg:
