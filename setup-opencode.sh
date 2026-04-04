@@ -58,7 +58,6 @@ TO_REMOVE_ITEMS=(
   "rules"
   "plugins"
   ".agentignore"
-  "sh-config.json"
   "templates"
 )
 
@@ -72,6 +71,33 @@ else
   MODE_EMOJI="📋"
 fi
 
+# Create temporary directory for backing up *.local.* files and *-local/ folders
+TMP_BACKUP_DIR=$(mktemp -d)
+trap "rm -rf '$TMP_BACKUP_DIR'" EXIT
+
+# Backup *.local.* files and *-local/ folders from TO_REMOVE_ITEMS
+for item in "${TO_REMOVE_ITEMS[@]}"; do
+  TARGET_PATH="$DEST/$(basename "$item")"
+  
+  if [[ -d "$TARGET_PATH" ]]; then
+    BACKUP_ITEM_DIR="$TMP_BACKUP_DIR/$(basename "$item")"
+    mkdir -p "$BACKUP_ITEM_DIR"
+    
+    # Backup *.local.* files
+    if compgen -G "$TARGET_PATH/*.local.*" > /dev/null 2>&1; then
+      cp "$TARGET_PATH"/*.local.* "$BACKUP_ITEM_DIR/" 2>/dev/null || true
+      echo "💾 Backed up local files from: $TARGET_PATH"
+    fi
+    
+    # Backup *-local/ folders
+    if compgen -G "$TARGET_PATH/*-local" > /dev/null 2>&1; then
+      cp -r "$TARGET_PATH"/*-local "$BACKUP_ITEM_DIR/" 2>/dev/null || true
+      echo "💾 Backed up local folders from: $TARGET_PATH"
+    fi
+  fi
+done
+
+# Now remove all TO_REMOVE_ITEMS
 for item in "${TO_REMOVE_ITEMS[@]}"; do
   TARGET_PATH="$DEST/$(basename "$item")"
   if [[ -e "$TARGET_PATH" || -L "$TARGET_PATH" ]]; then
@@ -109,5 +135,36 @@ echo "Creating opencode.json if it doesn't exist..."
 cp -n "$SCRIPT_DIR/.opencode/opencode.example.json" "$TARGET_DIR/.opencode/opencode.json" 2>/dev/null || true
 
 bash $SCRIPT_DIR/setup-config.sh
+
+# Restore backed up *.local.* files and *-local/ folders
+for backup_item in "$TMP_BACKUP_DIR"/*; do
+  if [[ -d "$backup_item" ]]; then
+    item_name=$(basename "$backup_item")
+    TARGET_PATH="$DEST/$item_name"
+    RESTORE_PATH="$TARGET_PATH"
+    
+    # If TARGET_PATH is a symlink, resolve to the actual directory
+    if [[ -L "$TARGET_PATH" ]]; then
+      RESTORE_PATH=$(readlink -f "$TARGET_PATH")
+    fi
+    
+    # Create the directory if it doesn't exist
+    if [[ ! -d "$RESTORE_PATH" ]]; then
+      mkdir -p "$RESTORE_PATH"
+    fi
+    
+    # Restore *.local.* files
+    if compgen -G "$backup_item/*.local.*" > /dev/null 2>&1; then
+      cp "$backup_item"/*.local.* "$RESTORE_PATH/" 2>/dev/null || true
+      echo "♻️  Restored local files to: $RESTORE_PATH"
+    fi
+    
+    # Restore *-local/ folders
+    if compgen -G "$backup_item/*-local" > /dev/null 2>&1; then
+      cp -r "$backup_item"/*-local "$RESTORE_PATH/" 2>/dev/null || true
+      echo "♻️  Restored local folders to: $RESTORE_PATH"
+    fi
+  fi
+done
 
 echo -e "\n✅ Done Opencode\n"

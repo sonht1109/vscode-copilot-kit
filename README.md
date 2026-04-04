@@ -20,35 +20,66 @@ Clone the repo:
 cd ~ && git clone git@github.com:sonht1109/vscode-copilot-kit.git
 ```
 
-Add permission to execute bash file:
+Expose the kit subcommand from `bin`:
 
 ```bash
-chmod +x ~/vscode-copilot-kit/*.sh
+# add the kit bin folder to PATH
+echo 'export PATH="$HOME/vscode-copilot-kit/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 ```
 
-Then `cd` into your service which you want to use this kit to link MD files.
-
-For example:
+Then `cd` into your service and run the subcommand:
 
 ```bash
-cd project && ~/vscode-copilot-kit/setup.sh
+cd project && vck setup
 
-# or for opencode
-cd project && ~/vscode-copilot-kit/setup-opencode.sh
+# setup for opencode
+cd project && vck setup opencode
 
-# or for claudecode
-cd project && ~/vscode-copilot-kit/setup-claudecode.sh
+# setup for claudecode
+cd project && vck setup claude
 
-# or it you want to setup ALL tools at once
-cd project && ~/vscode-copilot-kit/setup.sh --all
+# setup all supported tools
+cd project && vck setup all
+
+# use symbolic links instead of copying
+cd project && vck setup all --link
+```
+
+Available options:
+
+```bash
+Usage:
+  vck <command> [options]
+
+Commands:
+  setup [target]     Run setup scripts for a target environment
+  update [target]    Pull latest kit changes then run setup
+  help               Show this help message
+
+Targets:
+  copilot            Setup VSCode Copilot files (default)
+  opencode           Setup Opencode files
+  claude             Setup Claudecode files
+  all                Setup all supported tools
+
+Options:
+  -cp, --copy        Copy files (default)
+  -ln, --link        Create symlinks instead of copying
+  -h, --help         Show this help message
 ```
 
 #### 2. Update the kit
 
-If you want to update the kit to get the latest changes, just run the setup script again (**in the service folder**):
+If you want to update the kit to get the latest changes, run update via the subcommand (**in the service folder**):
 
 ```bash
-cd project && ~/vscode-copilot-kit/pull-update.sh && ~/vscode-copilot-kit/setup.sh # or setup-opencode.sh or setup-claudecode.sh
+cd project && vck update
+
+# or specific targets
+cd project && vck update opencode
+cd project && vck update claude
+cd project && vck update all
 ```
 
 That's it. You can start using the kit. Check the usage below to know how to use this kit.
@@ -268,6 +299,7 @@ Step-by-step guides for common development tasks:
 - 🚀 [Feature Implementation Workflow](./docs/workflows/feature-implement-workflow.md) - Plan, implement, and deliver features
 - 🔍 [Code Review Workflow](./docs/workflows/code-review-workflow.md) - Review code changes before committing
 - 📝 [Pull Request Workflow](./docs/workflows/pull-request-workflow.md) - Create and manage pull requests
+- 🎨 [Figma Implementation Workflow](./docs/workflows/figma-implementation.md) - Implement Figma designs based on requirements or JIRA tickets
 
 ## Docs
 
@@ -275,11 +307,12 @@ Step-by-step guides for common development tasks:
   - [create-pr]()
   - [review-code-changes]()
   - [review-pr]()
-  - [commit]()
   - [plan]()
+  - [init]()
   - [cook-plan]()
-  - [generate-instruction]()
+  - [cook-figma]()
 - Agents:
+  - [console-spec]()
   - [code-reviewer]()
   - [planner]()
   - [jira-ticket-analyzer]()
@@ -288,3 +321,33 @@ Step-by-step guides for common development tasks:
   - [gh]()
   - [sequential-thinking]()
   - [docs-seeker]()
+  - [figma-implementation]()
+
+## Use your local MD
+
+In case you want to use your local MD files along with the kit, you can create files with `*.local.*` in name or `*-local/` folders.
+
+Eg:
+
+```markdown
+.github/agents/code-reviewer.local.agent.md
+.claude/skills/project-local/SKILL.md
+.opencode/commands/command.local.md
+```
+
+These files/folders will be preserved during the setup process and won't be overwritten by the kit.
+
+## How to contribute
+
+Contributions are welcome! To contribute, please fork the repository, make your changes in a new branch, and submit a pull request. Follow these steps:
+
+1. Fork the repository and clone it to your local machine and checkout a new branch.
+2. If you desire to add new agents/prompts/skills/instructions/templates, please add them into `.github/` folder first. Then run scripts to sync to other tools like opencode and claudecode:
+
+```bash
+bash ./migrate-tools.sh
+```
+
+3. If you desire to add other things which are specific to a tool, like `.github/hooks`, `.claude/settings.json`, `.opencode/plugins`, etc., please add them into the corresponding folder and make sure to update the setup scripts if needed.
+
+4. Commit and create PR

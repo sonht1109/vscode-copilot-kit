@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+KIT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  vck <command> [options]
+
+Commands:
+  setup [target]     Run setup scripts for a target environment
+  update [target]    Pull latest kit changes then run setup
+  help               Show this help message
+
+Targets:
+  copilot            Setup VSCode Copilot files (default)
+  opencode           Setup Opencode files
+  claude             Setup Claudecode files
+  all                Setup all supported tools
+
+Options:
+  -cp, --copy        Copy files (default)
+  -ln, --link        Create symlinks instead of copying
+  -h, --help         Show this help message
+
+Examples:
+  vck setup
+  vck setup opencode --link
+  vck setup all --copy
+  vck update claude --link
+EOF
+}
+
+fail() {
+  echo "Error: $1" >&2
+  exit 1
+}
+
+is_target() {
+  case "$1" in
+    copilot|opencode|claude|all)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+run_setup() {
+  local target="$1"
+  local mode_flag="$2"
+
+  case "$target" in
+    copilot)
+      bash "$KIT_ROOT/setup.sh" "$mode_flag"
+      ;;
+    opencode)
+      bash "$KIT_ROOT/setup-opencode.sh" "$mode_flag"
+      ;;
+    claude)
+      bash "$KIT_ROOT/setup-claude.sh" "$mode_flag"
+      ;;
+    all)
+      bash "$KIT_ROOT/setup.sh" --all "$mode_flag"
+      ;;
+    *)
+      fail "Unknown target: $target"
+      ;;
+  esac
+}
+
+main() {
+  if [[ $# -eq 0 ]]; then
+    usage
+    exit 0
+  fi
+
+  local command="$1"
+  shift
+
+  local target="copilot"
+  local mode_flag="--copy"
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      copilot|opencode|claude|all)
+        target="$1"
+        shift
+        ;;
+      -cp|--copy)
+        mode_flag="--copy"
+        shift
+        ;;
+      -ln|--link)
+        mode_flag="--link"
+        shift
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        fail "Unknown option or target: $1"
+        ;;
+    esac
+  done
+
+  if ! is_target "$target"; then
+    fail "Invalid target: $target"
+  fi
+
+  case "$command" in
+    setup)
+      run_setup "$target" "$mode_flag"
+      ;;
+    update)
+      bash "$KIT_ROOT/pull-update.sh"
+      run_setup "$target" "$mode_flag"
+      ;;
+    help|-h|--help)
+      usage
+      ;;
+    *)
+      fail "Unknown command: $command"
+      ;;
+  esac
+}
+
+main "$@"

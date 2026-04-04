@@ -6,7 +6,6 @@ notes/*
 */**/settings.local.json
 
 node_modules
-sh-config.json
 
 wip-*
 
