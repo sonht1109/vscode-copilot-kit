@@ -10,12 +10,18 @@
 INPUT=$(cat)
 
 AGENTIGNORE_FILE="$HOME/.config/vscode-copilot-kit/.agentignore"
-TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name? // empty')
-FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.files[]? // .tool_input.filePath? // empty')
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command? // empty')
+
+# Parse input JSON safely
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name? // empty' 2>/dev/null || echo "")
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.files[]? // .tool_input.filePath? // empty' 2>/dev/null || echo "")
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command? // empty' 2>/dev/null || echo "")
 
 get_protection_patterns() {
-  grep -v '^\s*#' "$AGENTIGNORE_FILE" | sed '/^\s*$/d'
+  if [ ! -f "$AGENTIGNORE_FILE" ]; then
+    # Return empty if file doesn't exist - no patterns to check
+    return 0
+  fi
+  grep -v '^\s*#' "$AGENTIGNORE_FILE" 2>/dev/null | sed '/^\s*$/d' || true
 }
 
 matches_pattern() {
@@ -38,6 +44,11 @@ check_access() {
   local tool="$1"
   local value="$2"
 
+  # Skip check if no value provided
+  if [ -z "$value" ]; then
+    return 0
+  fi
+
   local error_msg
   local additional_ctx
 
@@ -51,6 +62,7 @@ check_access() {
   fi
 
   while IFS= read -r pattern; do
+    [ -z "$pattern" ] && continue
     if matches_pattern "$value" "$pattern"; then
       cat <<EOF
 {

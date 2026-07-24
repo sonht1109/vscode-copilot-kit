@@ -84,14 +84,7 @@ cd project && vck update all
 
 That's it. You can start using the kit. Check the usage below to know how to use this kit.
 
-> [!TIP]
-> 💡 If you don't see the instruction file `copilot-instructions.md`, you SHOULD generate one by running:
->
-> ```bash
-> /init
-> ```
->
-> This is optional, but helps Copilot work even better!
+### MCP Server
 
 ### MCP Server
 
@@ -299,29 +292,20 @@ Step-by-step guides for common development tasks:
 - 🚀 [Feature Implementation Workflow](./docs/workflows/feature-implement-workflow.md) - Plan, implement, and deliver features
 - 🔍 [Code Review Workflow](./docs/workflows/code-review-workflow.md) - Review code changes before committing
 - 📝 [Pull Request Workflow](./docs/workflows/pull-request-workflow.md) - Create and manage pull requests
-- 🎨 [Figma Implementation Workflow](./docs/workflows/figma-implementation.md) - Implement Figma designs based on requirements or JIRA tickets
 
 ## Docs
 
-- Commands:
-  - [create-pr]()
-  - [review-code-changes]()
-  - [review-pr]()
-  - [plan]()
-  - [init]()
-  - [cook-plan]()
-  - [cook-figma]()
-- Agents:
-  - [console-spec]()
-  - [code-reviewer]()
-  - [planner]()
-  - [jira-ticket-analyzer]()
 - Skills:
-  - [backend-development]()
-  - [gh]()
-  - [sequential-thinking]()
   - [docs-seeker]()
   - [figma-implementation]()
+  - [code-reviewer]()
+  - [create-pr]()
+  - [git]()
+  - [jira-ticket-analysis]()
+  - [jira-to-spec]()
+  - [review-pr]()
+  - [test-writing]()
+  - [worktree]()
 
 ## Use your local MD
 

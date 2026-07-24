@@ -5,19 +5,9 @@
 Quickly review your code for quality, bugs, and best practices before commit or PR.
 
 ## Prerequisite
-- Code changes ready
-- For `/review-pr`: Both Atlassian and GitHub MCP servers must be configured
+Atlassian MCP Server
 
 ## Example Workflows
-
-### 1. Local Review
-```bash
-# Review your changes
-/review-code-changes
-# Fix issues if any, then re-run
-/review-code-changes
-```
-*Checks your code for issues before you commit or PR.*
 
 ### 2. Team Review
 ```bash
@@ -28,7 +18,6 @@ Quickly review your code for quality, bugs, and best practices before commit or 
 *Ensures team code meets standards before merge.*
 
 ## Commands
-- `/review-code-changes` – Review local changes
 - `/review-pr <PR_URL>` – Review a pull request
 
 ---

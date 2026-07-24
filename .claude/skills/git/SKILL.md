@@ -24,10 +24,11 @@ Where:
 
 ## Branch naming convention
 
-Branch names MUST follow the format:
+Branch names MUST follow the formats:
 
 ```bash
-<type>/<scope?>/<JIRA_ticket?>
+<type>/<scope?>
+<type>/<JIRA_ticket?>
 ```
 
 Where:
@@ -45,7 +46,7 @@ Eg:
 
 - `feat/IMP-1234`
 - `fix/IOS-5678`
-- `docs/adhoc/update-readme`
+- `docs/update-readme`
 
 ## Notes
 

@@ -5,7 +5,7 @@ description: Use when doing tasks related to markdown files, such as editing REA
 
 # Markdown
 
-## README files
+## README
 
 Use these alerts block to highlight important information in README files or other documentation files.
 

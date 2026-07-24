@@ -12,7 +12,7 @@ Plan, build, and deliver new features with clarity and speed.
 ### 1. Plan a Feature
 ```bash
 # Generate a feature plan from JIRA
-/plan IMP-1234
+/jira-to-spec IMP-1234
 ```
 *Creates a step-by-step plan for your feature.*
 
@@ -26,18 +26,11 @@ Plan, build, and deliver new features with clarity and speed.
 ### 3. Implement the Plan
 ```bash
 # Build the feature from the plan
-/cook notes/specs/IMP-1234-feature-name.spec.md
+implement spec notes/specs/IMP-1234-feature-name.spec.md
 ```
 *Agent follows the plan, writes code, and runs checks.*
 
-### 4. Review Code Changes
-```bash
-# Review code changes made during implementation
-/review-code-changes
-```
-*Agent checks code quality, style, and adherence to requirements.*
-
-### 5. Deliver
+### 4. Deliver
 ```bash
 # Create a pull request
 /create-pr develop IMP-1234
@@ -45,10 +38,5 @@ Plan, build, and deliver new features with clarity and speed.
 *Commits, pushes, and opens a PR for your feature.*
 
 ## Commands
-- `/plan <JIRA_ticket>` – Generate feature plan
-- `/cook <plan_file>` – Implement from plan
-- `/review-code-changes` – Review code changes from plan
+- `/jira-to-spec <JIRA_ticket>` – Generate feature plan
 - `/create-pr <branch> <JIRA_ticket>` – Create PR
-
----
-See also: [Code Review Workflow](./code-review-workflow.md) | [Pull Request Workflow](./pull-request-workflow.md)

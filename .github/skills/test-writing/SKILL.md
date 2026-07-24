@@ -123,9 +123,11 @@ it('result should have correct name', async () => {
 });
 ```
 
-- If its unitest, focus on creating unit tests that isolate individual functions or components to verify their behavior in isolation. Do mock on other dependencies if necessary.
+- If its unitest, focus on creating unit tests that isolate individual functions or components to verify their behavior in isolation. MUST do mock on other dependencies if necessary.
 
-- If its integration test or API test:
+- If its integration test:
   - Focus on creating integration tests that verify the interactions between different components or modules to ensure they work together as expected
-  - Only do mock on repository/database layer if necessary
-  - Focus on input validation, error handling, and the overall flow of data through the system.
+  - If its integration test for backend:
+    - DO NOT mock on repository/database layer. Must have `testcontainers` setup for testing, and focus on testing the real database interaction. Refer to [testcontainers](references/testcontainers.md) for more details.
+    - Use `supertest` to test the API endpoints, and focus on testing the real API interaction.
+    - Must prepare dataset and tables before testing, and clean up data after testing to maintain test isolation and avoid side effects between tests.
