@@ -11,11 +11,19 @@ Triage every observation into one of two buckets before you write it down:
 
 ### Crucial — always analyze deeply, always report
 
-1. **Breaking Changes:** Identify any potential breaking changes or backward compatibility issues. If a function's input/output structure is modified, analyze whether those changes will affect existing consumers/logic. Answer the following questions:
+1. **Breaking Changes:** Identify any potential breaking changes or backward compatibility issues. Start by identifying exactly which parts are touched — functions, endpoints, data models, message contracts, or shared types. If a function's input/output structure is modified, analyze whether those changes will affect existing consumers/logic. Answer the following questions:
 
+- **What is touched?** List the specific functions, endpoints, DTOs, event schemas, or database columns being modified.
 - Have all consumers been identified/changed accordingly?
 - Are there tests covering both old and new behaviors to ensure stability during the transition?
 - Have documentation and versioning been updated to reflect the changes?
+
+In a **microservices architecture**, extend the analysis to cross-service impact:
+
+- **Does this change affect an API contract** (REST endpoint, GraphQL schema, gRPC proto) that other services consume? If yes, which services and how will they behave if they receive the new response shape or are expected to send the new request shape?
+- **Does this change affect a shared event/message schema** (Kafka, RabbitMQ, SQS)? Will existing consumers parse the new payload correctly, or will they fail/drop fields silently?
+- **Does this change affect shared database tables or columns** accessed by multiple services? Will other services' queries still work, or will they hit missing/renamed columns?
+- **Is the change backward compatible?** Can old and new versions of the service coexist during deployment (rolling update), or does this require a coordinated release across services?
 
 2. **Functionality:** Ensure the code works as intended and meets the requirements (if any). This is the core of the review — walk through the actual logic path, not just the shape of the diff:
 
@@ -28,6 +36,14 @@ Triage every observation into one of two buckets before you write it down:
 - Injection (SQL, command, template) and unsanitized input reaching a sink
 - Broken auth/authorization checks, exposed secrets or PII
 - XSS or other client-side injection with a real attacker-controlled input path
+- **Sensitive information must not be logged or hardcoded:** API keys, tokens, passwords, credentials, PII, or any secrets should never appear in logs, console output, or hardcoded in source code. Flag any `console.log`, `logger.*`, or similar calls that output sensitive data, and any hardcoded secrets in config files or source.
+
+4. **New Calls Added Inside an Existing Function:** When the change adds a call to another function (a service, a query, an API request, an event/notification) inside a function that already exists, you MUST answer: **if that new call fails, how does it affect the main flow?** Trace it:
+
+- Does a thrown error or rejection stop the main flow, and is stopping the correct behavior? If the call is only a side effect (logging, analytics, cache write, notification), a failure must not break the primary operation.
+- If the failure is caught and ignored, does the main flow then continue with missing or wrong data, or leave state half-written?
+- Is the call inside a transaction? A failure or a slow external call there can roll back or lock more than intended.
+- Is the new call awaited? An unawaited promise that rejects can crash the process or silently drop the work.
 
 **MUST** walk through the whole flow of the function and analyze whether a change here has any downstream impact — that's what separates a real finding from a guess.
 

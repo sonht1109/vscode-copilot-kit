@@ -65,6 +65,7 @@ describe('should throw error if input is invalid', () => {
 ## Tips
 
 - Never edit original code.
+- **Focus on business flow**: Test what the system does from a business perspective — data transformations, state transitions, outcomes of operations. Do NOT write assertions for side effects that have no business value, such as whether a logger was called, whether a metric was incremented, or whether an internal helper was invoked.
 - Remove unnecessary details and focus on the core functionality being tested.
 - If result is mocked, no need to validate the result, just validate the input and the call to the mocked function. Eg:
 

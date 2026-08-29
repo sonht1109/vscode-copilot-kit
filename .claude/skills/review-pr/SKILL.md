@@ -27,7 +27,7 @@ If requirement is not enough, and JIRA ticket is linked, delegate to `jira-ticke
 2. **Review code changes**: with PR contents that are already cloned in local:
 
 - Check how many content files are changes
-- With each file, spawn corresponding `code-review` agent with the following params (can be up to 3 sub-agents at a time):
+- With each file, spawn corresponding `code-review` agent with the following params (can be up to 4 sub-agents at a time):
   - file_path: the file path of this file's own individual patch (one file's changes only, from `contents/`). Only one file per agent.
   - requirement: the requirement that the code change is trying to solve (if any)
   - parent_diff_path: the path to the combined `diff.patch` covering every file changed in the PR, not just this one. The sub-agent needs this to resolve symbols (functions, types, imports) that are defined or modified in a sibling file rather than in `file_path` itself — without it, the sub-agent can only see this one file and will wrongly flag such symbols as undefined.
