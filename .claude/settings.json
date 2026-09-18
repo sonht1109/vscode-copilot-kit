@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/scripts/hooks/scout-block.sh"
+            "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/scripts/hooks/scout-block.sh"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node .claude/scripts/hooks/dev-rules-reminder.js"
+            "command": "node ${CLAUDE_PROJECT_DIR}/.claude/scripts/hooks/dev-rules-reminder.js"
           }
         ]
       }
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh .claude/scripts/hooks/permission-alert.sh"
+            "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/scripts/hooks/permission-alert.sh"
           }
         ]
       }
@@ -49,7 +49,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh .claude/scripts/hooks/stop-alert.sh"
+            "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/scripts/hooks/stop-alert.sh"
           }
         ]
       }
@@ -57,10 +57,15 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "FORCE_COLOR=1 node .claude/scripts/statusline.js",
+    "command": "FORCE_COLOR=1 node ${CLAUDE_PROJECT_DIR}/.claude/scripts/statusline.js",
     "padding": 0
   },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Skill(*)"
+    ]
   }
 }
